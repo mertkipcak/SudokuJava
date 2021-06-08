@@ -2,21 +2,36 @@ package model;
 
 import ui.GamePanel;
 
-import java.util.Observable;
-import java.util.concurrent.TimeUnit;
-
-public class SudokuSolver extends Observable {
+public class SudokuSolver {
 
     public SudokuGame game;
     public GamePanel gp;
 
     public SudokuSolver(SudokuGame game) {
         this.game = game;
-        boolean solved = solve(0);
+        gp = game.gp;
     }
 
-    public void setGp(GamePanel gp) {
-        this.gp = gp;
+    public boolean visualSolve(int i) {
+        if(game.complete()) {
+            return true;
+        } else {
+            if(game.board[i].locked) {
+                return visualSolve(i +1);
+            } else {
+                for(int n = 1; n < 10; n++) {
+                    game.board[i].setValue(n);
+                    gp.paintComponent(gp.getGraphics());
+                    if(game.isBoardViable()) {
+                        if(visualSolve(i + 1)) {
+                            return visualSolve(i + 1);
+                        }
+                    }
+                    game.board[i].setValue(0);
+                }
+                return false;
+            }
+        }
     }
 
     public boolean solve(int i) {
@@ -28,13 +43,7 @@ public class SudokuSolver extends Observable {
             } else {
                 for(int n = 1; n < 10; n++) {
                     game.board[i].setValue(n);
-
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(0);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if(game.isBoardViabile()) {
+                    if(game.isBoardViable()) {
                         if(solve(i + 1)) {
                             return solve(i + 1);
                         }

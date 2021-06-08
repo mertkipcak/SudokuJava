@@ -1,5 +1,7 @@
 package model;
 
+import ui.GamePanel;
+
 import java.awt.event.KeyEvent;
 
 public class SudokuGame {
@@ -39,6 +41,7 @@ public class SudokuGame {
     public Box[] board;
 
     public SudokuSolver solver;
+    public GamePanel gp;
 
     // represents the selected square
     public int selected = 0;
@@ -48,6 +51,10 @@ public class SudokuGame {
         for(int i = 0; i < 81; i++) {
             board[i] = new Box();
         }
+    }
+
+    public void setGp(GamePanel gp) {
+        this.gp = gp;
     }
 
     public void handleClick(int i) {
@@ -93,12 +100,36 @@ public class SudokuGame {
                 unlockState();
                 break;
             case KeyEvent.VK_SPACE:
-                new SudokuSolver(this);
+                solver = new SudokuSolver(this);
+                solver.solve(0);
+                break;
+            case KeyEvent.VK_BACK_SPACE:
+                solver = new SudokuSolver(this);
+                solver.visualSolve(0);
+                break;
+            case KeyEvent.VK_R:
+                for(int n = 0; n < 81; n++) {
+                    if(!board[n].locked) {
+                        board[n] = new Box();
+                    }
+                }
+                break;
+            case KeyEvent.VK_T:
+                board = new Box[81];
+                for(int n = 0; n < 81; n++) {
+                    board[n] = new Box();
+                }
+                break;
+            case KeyEvent.VK_P:
+                printBoard();
+                break;
+            case KeyEvent.VK_Z:
+                setBoard0();
                 break;
             default:
                 break;
         }
-        isBoardViabile();
+        isBoardViable();
     }
 
     /**
@@ -120,7 +151,7 @@ public class SudokuGame {
         }
     }
 
-    public boolean isBoardViabile() {
+    public boolean isBoardViable() {
         setAllViable();
         for(int[] group: GROUPS) {
             for(int n0 = 0; n0 < 9; n0++) {
@@ -147,7 +178,7 @@ public class SudokuGame {
     }
 
     public boolean complete() {
-        return isBoardViabile() && boardFilled();
+        return isBoardViable() && boardFilled();
     }
 
     private boolean boardFilled() {
@@ -157,4 +188,94 @@ public class SudokuGame {
         return true;
     }
 
+    private void printBoard() {
+        for(int i = 0; i < 81; i++) {
+            System.out.printf("board[%d].setValue(%d);\n", i, board[i].value);
+        }
+    }
+
+    private void setBoard0() {
+        board[0].setValue(0);
+        board[1].setValue(0);
+        board[2].setValue(0);
+        board[3].setValue(2);
+        board[4].setValue(6);
+        board[5].setValue(0);
+        board[6].setValue(7);
+        board[7].setValue(0);
+        board[8].setValue(1);
+        board[9].setValue(6);
+        board[10].setValue(8);
+        board[11].setValue(0);
+        board[12].setValue(0);
+        board[13].setValue(7);
+        board[14].setValue(0);
+        board[15].setValue(0);
+        board[16].setValue(9);
+        board[17].setValue(0);
+        board[18].setValue(1);
+        board[19].setValue(9);
+        board[20].setValue(0);
+        board[21].setValue(0);
+        board[22].setValue(0);
+        board[23].setValue(4);
+        board[24].setValue(5);
+        board[25].setValue(0);
+        board[26].setValue(0);
+        board[27].setValue(8);
+        board[28].setValue(2);
+        board[29].setValue(0);
+        board[30].setValue(1);
+        board[31].setValue(0);
+        board[32].setValue(0);
+        board[33].setValue(0);
+        board[34].setValue(4);
+        board[35].setValue(0);
+        board[36].setValue(0);
+        board[37].setValue(0);
+        board[38].setValue(4);
+        board[39].setValue(6);
+        board[40].setValue(0);
+        board[41].setValue(2);
+        board[42].setValue(9);
+        board[43].setValue(0);
+        board[44].setValue(0);
+        board[45].setValue(0);
+        board[46].setValue(5);
+        board[47].setValue(0);
+        board[48].setValue(0);
+        board[49].setValue(0);
+        board[50].setValue(3);
+        board[51].setValue(0);
+        board[52].setValue(2);
+        board[53].setValue(8);
+        board[54].setValue(0);
+        board[55].setValue(0);
+        board[56].setValue(9);
+        board[57].setValue(3);
+        board[58].setValue(0);
+        board[59].setValue(0);
+        board[60].setValue(0);
+        board[61].setValue(7);
+        board[62].setValue(4);
+        board[63].setValue(0);
+        board[64].setValue(4);
+        board[65].setValue(0);
+        board[66].setValue(0);
+        board[67].setValue(5);
+        board[68].setValue(0);
+        board[69].setValue(0);
+        board[70].setValue(3);
+        board[71].setValue(6);
+        board[72].setValue(7);
+        board[73].setValue(0);
+        board[74].setValue(3);
+        board[75].setValue(0);
+        board[76].setValue(1);
+        board[77].setValue(8);
+        board[78].setValue(0);
+        board[79].setValue(0);
+        board[80].setValue(0);
+        lockState();
+    }
 }

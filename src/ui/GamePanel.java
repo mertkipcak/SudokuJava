@@ -22,10 +22,11 @@ public class GamePanel extends JPanel {
         panelSide = BOX_SIDE * 9;
         setPreferredSize(new Dimension(panelSide, panelSide));
         this.game = game;
+        game.setGp(this);
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawGame(g);
     }
