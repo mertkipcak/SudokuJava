@@ -69,9 +69,11 @@ public class GamePanel extends JPanel {
             if(game.board[i].value != 0) {
                 if(!game.board[i].viable) {
                     g.setColor(Color.red);
+                } else if(game.board[i].locked) {
+                    g.setColor(Color.darkGray);
                 }
                 g.drawString(Integer.toString(game.board[i].value), i % 9 * BOX_SIDE + BOX_SIDE / 3, i / 9 * BOX_SIDE + BOX_SIDE * 2 / 3);
-                if(!game.board[i].viable) {
+                if(!game.board[i].viable || game.board[i].locked) {
                     g.setColor(Color.black);
                 }
             }

@@ -23,7 +23,7 @@ public class SudokuGame {
             { 5, 14, 23, 32, 41, 50, 59, 68, 77},
             { 6, 15, 24, 33, 42, 51, 60, 69, 78},
             { 7, 16, 25, 34, 43, 52, 61, 70, 79},
-            { 8, 17, 25, 35, 44, 53, 62, 71, 80}, // end of cols
+            { 8, 17, 26, 35, 44, 53, 62, 71, 80}, // end of cols
             { 0,  1,  2,  9, 10, 11, 18, 19, 20}, // squares
             { 3,  4,  5, 12, 13, 14, 21, 22, 23},
             { 6,  7,  8, 15, 16, 17, 24, 25, 26},
@@ -37,6 +37,8 @@ public class SudokuGame {
 
     // represents the board
     public Box[] board;
+
+    public SudokuSolver solver;
 
     // represents the selected square
     public int selected = 0;
@@ -55,45 +57,70 @@ public class SudokuGame {
     public void handlePress(int i) {
         switch (i) {
             case KeyEvent.VK_0:
-                board[selected].value = 0;
+                board[selected].setValue(0);
                 break;
             case KeyEvent.VK_1:
-                board[selected].value = 1;
+                board[selected].setValue(1);
                 break;
             case KeyEvent.VK_2:
-                board[selected].value = 2;
+                board[selected].setValue(2);
                 break;
             case KeyEvent.VK_3:
-                board[selected].value = 3;
+                board[selected].setValue(3);
                 break;
             case KeyEvent.VK_4:
-                board[selected].value = 4;
+                board[selected].setValue(4);
                 break;
             case KeyEvent.VK_5:
-                board[selected].value = 5;
+                board[selected].setValue(5);
                 break;
             case KeyEvent.VK_6:
-                board[selected].value = 6;
+                board[selected].setValue(6);
                 break;
             case KeyEvent.VK_7:
-                board[selected].value = 7;
+                board[selected].setValue(7);
                 break;
             case KeyEvent.VK_8:
-                board[selected].value = 8;
+                board[selected].setValue(8);
                 break;
             case KeyEvent.VK_9:
-                board[selected].value = 9;
+                board[selected].setValue(9);
                 break;
-            case KeyEvent.VK_C:
-                System.out.println(boardViability());
+            case KeyEvent.VK_L:
+                lockState();
+                break;
+            case KeyEvent.VK_K:
+                unlockState();
+                break;
+            case KeyEvent.VK_SPACE:
+                new SudokuSolver(this);
                 break;
             default:
                 break;
         }
-        boardViability();
+        isBoardViabile();
     }
 
-    public boolean boardViability() {
+    /**
+     * locks the boxes that currently have a value
+     */
+    private void lockState() {
+        for(Box box: board) {
+            if (box.value != 0) {
+                box.locked = true;
+            }
+        }
+    }
+
+    private void unlockState() {
+        for(Box box: board) {
+            if (box.value != 0) {
+                box.locked = false;
+            }
+        }
+    }
+
+    public boolean isBoardViabile() {
         setAllViable();
         for(int[] group: GROUPS) {
             for(int n0 = 0; n0 < 9; n0++) {
@@ -117,6 +144,17 @@ public class SudokuGame {
         for(Box box: board) {
             box.viable = true;
         }
+    }
+
+    public boolean complete() {
+        return isBoardViabile() && boardFilled();
+    }
+
+    private boolean boardFilled() {
+        for(Box box: board) {
+            if(box.value == 0) return false;
+        }
+        return true;
     }
 
 }

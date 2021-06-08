@@ -8,8 +8,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Sudoku extends JFrame {
+public class Sudoku extends JFrame implements Observer {
 
     private final GamePanel gp;
 
@@ -42,6 +44,11 @@ public class Sudoku extends JFrame {
         setLocation((scrn.width - getWidth()) / 2, (scrn.height - getHeight()) / 2);
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        repaint();
+    }
+
     /**
      * mouse handler class:
      * every mouse action calls handleCLick function on the tile clicked
@@ -51,7 +58,6 @@ public class Sudoku extends JFrame {
         @Override
         public void mouseClicked(MouseEvent e) {
             int boardValue = e.getX() / gp.BOX_SIDE + e.getY() / gp.BOX_SIDE * 9;
-            System.out.println(boardValue);
             gp.game.handleClick(boardValue);
             gp.repaint();
         }
@@ -59,7 +65,6 @@ public class Sudoku extends JFrame {
         @Override
         public void mousePressed(MouseEvent e) {
             int boardValue = e.getX() / gp.BOX_SIDE + e.getY() / gp.BOX_SIDE * 9;
-            System.out.println(boardValue);
             gp.game.handleClick(boardValue);
             gp.repaint();
         }
@@ -67,7 +72,6 @@ public class Sudoku extends JFrame {
         @Override
         public void mouseReleased(MouseEvent e) {
             int boardValue = e.getX() / gp.BOX_SIDE + e.getY() / gp.BOX_SIDE * 9;
-            System.out.println(boardValue);
             gp.game.handleClick(boardValue);
             gp.repaint();
         }
