@@ -50,14 +50,26 @@ public class Sudoku extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            int boardValue = e.getX() / gp.BOX_SIDE + e.getY() / gp.BOX_SIDE * 9;
+            System.out.println(boardValue);
+            gp.game.handleClick(boardValue);
+            gp.repaint();
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
+            int boardValue = e.getX() / gp.BOX_SIDE + e.getY() / gp.BOX_SIDE * 9;
+            System.out.println(boardValue);
+            gp.game.handleClick(boardValue);
+            gp.repaint();
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            int boardValue = e.getX() / gp.BOX_SIDE + e.getY() / gp.BOX_SIDE * 9;
+            System.out.println(boardValue);
+            gp.game.handleClick(boardValue);
+            gp.repaint();
         }
 
         @Override
@@ -74,6 +86,8 @@ public class Sudoku extends JFrame {
     private class KeyHandler extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
+            gp.game.handlePress(e.getKeyCode());
+            gp.repaint();
         }
     }
 

@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.event.KeyEvent;
+
 public class SudokuGame {
 
     // this is an array of numbers that together make up a group in sudoku, in order of: rows -> cols -> squares
@@ -34,13 +36,87 @@ public class SudokuGame {
     };
 
     // represents the board
-    public int[] board;
+    public Box[] board;
 
     // represents the selected square
     public int selected = 0;
 
-    public void changeSelected(int s, int i) {
-        board[s] = i;
+    public SudokuGame() {
+        board = new Box[81];
+        for(int i = 0; i < 81; i++) {
+            board[i] = new Box();
+        }
+    }
+
+    public void handleClick(int i) {
+        selected = i;
+    }
+
+    public void handlePress(int i) {
+        switch (i) {
+            case KeyEvent.VK_0:
+                board[selected].value = 0;
+                break;
+            case KeyEvent.VK_1:
+                board[selected].value = 1;
+                break;
+            case KeyEvent.VK_2:
+                board[selected].value = 2;
+                break;
+            case KeyEvent.VK_3:
+                board[selected].value = 3;
+                break;
+            case KeyEvent.VK_4:
+                board[selected].value = 4;
+                break;
+            case KeyEvent.VK_5:
+                board[selected].value = 5;
+                break;
+            case KeyEvent.VK_6:
+                board[selected].value = 6;
+                break;
+            case KeyEvent.VK_7:
+                board[selected].value = 7;
+                break;
+            case KeyEvent.VK_8:
+                board[selected].value = 8;
+                break;
+            case KeyEvent.VK_9:
+                board[selected].value = 9;
+                break;
+            case KeyEvent.VK_C:
+                System.out.println(boardViability());
+                break;
+            default:
+                break;
+        }
+        boardViability();
+    }
+
+    public boolean boardViability() {
+        setAllViable();
+        for(int[] group: GROUPS) {
+            for(int n0 = 0; n0 < 9; n0++) {
+                for(int n1 = 0; n1 < 9; n1++) {
+                    if(n0 != n1) {
+                        boolean toReturn = (board[group[n0]].value != board[group[n1]].value)
+                                || (board[group[n0]].value == 0) || (board[group[n1]].value == 0);
+                        if(!toReturn) {
+                            board[group[n0]].viable = false;
+                            board[group[n1]].viable = false;
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private void setAllViable() {
+        for(Box box: board) {
+            box.viable = true;
+        }
     }
 
 }

@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class GamePanel extends JPanel {
 
-    public static final int BOX_SIDE = 30;
+    public static final int BOX_SIDE = 90;
 
     public static final Color BACKGROUND = new Color(255, 244, 147);
 
@@ -32,6 +32,7 @@ public class GamePanel extends JPanel {
 
     private void drawGame(Graphics g) {
         drawBackground(g);
+        drawNumbers(g);
         drawGrid(g);
     }
 
@@ -50,11 +51,31 @@ public class GamePanel extends JPanel {
                 g.drawRect(x* BOX_SIDE, y* BOX_SIDE, BOX_SIDE -1, BOX_SIDE -1 );
             }
         }
-        g.setColor(Color.black);
+        g.setColor(Color.red);
         g.drawLine(panelSide/3, 0, panelSide/3 ,panelSide);
         g.drawLine(2*panelSide/3, 0, 2*panelSide/3 ,panelSide);
         g.drawLine(0, panelSide/3, panelSide, panelSide/3);
         g.drawLine(0, 2*panelSide/3, panelSide, 2*panelSide/3);
+        g.setColor(Color.CYAN);
+        g.drawRect(game.selected % 9 * BOX_SIDE, game.selected / 9 * BOX_SIDE, BOX_SIDE, BOX_SIDE);
+        g.setColor(savedCol);
+    }
+
+    private void drawNumbers(Graphics g) {
+        Color savedCol = g.getColor();
+        g.setColor(Color.black);
+        g.setFont((new Font("sudokuFont", Font.PLAIN, BOX_SIDE * 2 / 3)));
+        for(int i = 0; i < 81; i++) {
+            if(game.board[i].value != 0) {
+                if(!game.board[i].viable) {
+                    g.setColor(Color.red);
+                }
+                g.drawString(Integer.toString(game.board[i].value), i % 9 * BOX_SIDE + BOX_SIDE / 3, i / 9 * BOX_SIDE + BOX_SIDE * 2 / 3);
+                if(!game.board[i].viable) {
+                    g.setColor(Color.black);
+                }
+            }
+        }
         g.setColor(savedCol);
     }
 
